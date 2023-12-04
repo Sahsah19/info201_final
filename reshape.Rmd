@@ -1,0 +1,59 @@
+---
+title: "final"
+author: "Sahil Gupta"
+date: "2023-12-02"
+output: html_document
+---
+```{r}
+library(tidyverse)
+teams <- read_delim("nfl_teams.csv")
+```
+
+```{r}
+game_data <- read_delim("game_stats.csv")
+game_data <- game_data %>%
+  select(-...1, -GameKey, -Season, -SeasonType, -Week, -TotalScore, -OverUnder, -PointSpread, -IsGameOver, -TeamName, -TeamGameID, -TeamID, -OpponentID, -Day, -GlobalGameID, -GlobalTeamID, -GlobalOpponentID, -ScoreID, -Temperature, -WindSpeed, -Humidity, -DateTime, -Opponent, -Score, -OpponentScore, -Stadium) %>%
+  filter(HomeOrAway == "HOME") %>%
+  select(-HomeOrAway)
+
+ids <- c()
+
+for (row in 1:nrow(game_data)) {
+  date <- str_replace_all(game_data$Date[row], "-", "")
+  team_id <- tolower(game_data$Team[row])
+  ids <- c(ids, paste(date, "0", team_id, sep=""))
+}
+
+game_data <- cbind(game_id = ids, game_data) %>%
+  select(-Date, -Team)
+
+head(game_data)
+```
+
+```{r}
+betting_data <- read_delim("spreadspoke_scores.csv") %>%
+  filter(schedule_season >= 2002)
+  
+ids <- c()
+
+for (row in 1:nrow(betting_data)) {
+  date <- strsplit(as.character(betting_data$schedule_date[row]), "/")[[1]]
+  if (nchar(date[1]) == 1) date[1] <- paste0("0", date[1])
+  if (nchar(date[2]) == 1) date[2] <- paste0("0", date[2])
+  team_id <- tolower(teams$team_id[teams$team_name == betting_data$team_home[row]])
+  ids <- c(ids, paste(date[3], date[1], date[2], "0", team_id, sep=""))
+  
+  betting_data$team_home[row] = teams$team_id[teams$team_name == betting_data$team_home[row]]
+  betting_data$team_away[row] = teams$team_id[teams$team_name == betting_data$team_away[row]]
+}
+
+betting_data <- cbind(game_id = ids, betting_data)
+head(betting_data)
+```
+
+```{r}
+game_bets <- inner_join(betting_data, game_data)
+head(game_bets)
+
+write_csv(game_bets, "game_bets.csv")
+```
