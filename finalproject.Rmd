@@ -1,0 +1,266 @@
+---
+title: "INFO 201 Final Project - Betting Lines in the NFL"
+author: "Sahil Gupta, Fraser Kerr, Shlok Shetty"
+date: "2023-12-08"
+output: html_document
+---
+```{r}
+library(tidyverse)
+game_bets <- read_delim("game_bets.csv")
+```
+
+## Introduction
+### Context
+With the rise of sports betting becoming more accessible through electronic devices such as phones, the concept of sports betting has become a more popular form of gambling across the United States. People love to try to get money from sports, especially ones that interest them as they believe it is an easy way to make some money. This is an interesting topic as we can see how betting books came up with ways to make betting lines and what factors come into play when they make them. The sports books have an important job when it comes to figuring out where to set lines, since their jobs are to not let gamblers take too much of their money.  Therefore, lots of research and effort goes into the different lines that are set.  By exploring these lines and the trends that are associated with them, we can hopefully figure out how some of the thought processes into how these lines are set, and the different ways games play out accordingly.
+
+### The Knowns
+We already know basic information about betting lines and factors that affect a football game.  For example, when we see a spread of  “-6.5”, that means a team is favored to win by 6.5 points.  Even though a team can't score a half point, it is there to signify if you think a team is going to perform better or worse than that number.  That means you can bet on either team to cover that outcome (Either winning by 7 or more, or losing by 6 or less, depending on which team you are betting on).  In addition, there are over/under lines set for each game, allowing you to bet on the total number of points scored in the game. So if an over/under line is set at 59.5, then you can bet on it if you think the combined score will be less than 59, or 60+ points.  Both of these concepts are crucial, because it is the sportsbooks job to set these lines, and the gamblers job to select the correct side.  Having information on what can influence the outcomes of these 2 things accordingly is crucial.  It could potentially provide an advantage on which bets are the better ones to make.  Furthermore, we also understand that there are certain qualities around a game that may or may not affect a betting line.  For example, some games may have a home team, while others are at a neutral site.  In addition, games are played in varying temperatures and weather conditions, depending on the location.  Our goal is to see how these varying factors may affect the gambling lines in football games, as well as what in game results may also be affected.
+
+### The Goal
+What we are doing is utilizing a database consisting of NFL games, displaying both their betting lines and different game factors.  By using this dataset, we can isolate different qualities of a game to check the impact it may have on the spread (betting line) of the game.  For example, how do different weather conditions affect a betting line?  Does it cause the average spread to be a different amount?  Also, how could the weather affect the over/under line?  Certain factors in the game and its conditions may be causing the lines to go up and down accordingly.  Furthermore, maybe there is a chance that weather affects the total yardage total, or the number of turnovers taking place within the game.  While it is interesting to see how conditions affect betting lines, the reverse can also be true.  Perhaps we can use the betting lines to explore the conditions of what will take place during the game.  All of these different things can be explored within our data.  
+
+As just stated previously, this is not just about seeing how factors of a game affect the betting lines.  We can also study how a betting line might impact the results of what actually happens in the course of a game.  One example of this is seeing if games with the biggest spreads, actually lead to bigger blowouts.  If a team is supposed to win by 2 touchdowns, do blowouts happen more often than games that are only projected to be separated by a field goal?  Also, maybe the betting odds can have an impact on the amount of turnovers that take place in a game, and/or what the turnover differential is.  A low over/under total probably suggests the teams have 2 bad offenses/good defenses, so turnovers might be more likely to happen.  That can be investigated here.  To add on, we can also take a look at how accurate these betting lines actually are.  Does a 7 point favorite win the game by around 7 most of the time?  Or does a game with an over/under of 60.5 actually total up to around that mark?  There are lots of potential correlations and trends that we can spot within our data, and this project will look to find those.
+
+In addition, we are also studying the impact of a betting line and how that affects the results of what takes place in a game.  One example of this is seeing if games with the biggest spreads actually lead to bigger blowouts.  Also, maybe it has an impact on the amount of turnovers that take place in a game, and/or what the turnover differential is.  Furthermore, we can take a look at how accurate these betting lines actually are.  Does a 7 point favorite win the game by around 7 most of the time?  Or does a game with an over/under of 60.5 actually total up to around that mark?  There are lots of potential correlations and trends that we can spot within our data.
+
+One more thing we could look at is how the over/under lines might correlate with what happens in a game.  If the teams are projected to score more points according to casinos, then they should also have the games with the most yardage, right?  Something like that can be explored using this data, to see if we can predict offensive breakouts with betting lines.  The same goes for a low betting line, and how that may correlate with turnovers and low yardage.  Having this information might give help with betting on certain props, which basically means predicting specific things that may happen with teams or players.  So a game with a high over/under could incline us to pick the over on players yardage props, while the reverse can be said for the under’s. 
+
+The questions we will be answering:
+
+- How often to favorites win based on the spread?
+- How accurate are the over/under totals compared with the total score of the game?
+- Effect of indoor/outdoor stadiums on over/under totals?
+- Over/under lines through the decades. Have odds makers matched evolving offenses?
+- Spreads favoring home team or away team?
+- Underdogs win more at home/away?
+- How often do the lines set by bookmakers hit? How have they changed over time, with the advent of technology?
+
+### Why our Research is Meaningful
+This data is important because analytics and betting are some of, if not the fastest growing things in the world of sports today.  Analytics now are an integral part of decision making for coaches, whether it is the type of play they want to run, or making a decision to punt or go for it on first down.  In addition, the rise of the betting industry has made people more interested in trying to figure out the outcomes of games before they happen.  Recently, both of these topics have been blended together, with sports data and analytics being utilized to provide an edge with bets and gambling.  This data is useful to understand if you are interested in betting, because information you will learn through this project can help when making your own gambling decisions in the future.  And even if you are not interested in sports betting, this data should at least provide insight into how certain pre-game factors, such as spreads and conditions, can help you make more accurate predictions and give a greater understanding as to what will happen in the games.
+
+
+## The Data
+The two primary datasets that we utilize in our project, is one that covers the betting lines set by bookmakers for NFL games dating back to the 1960s. The other dataset is one that covers offensive statistics for corresponding NFL games, which will help in our overall analysis.
+
+### Why these datasets?
+We use these datasets because they provide the betting lines, which will help us create correlations between the betting lines and the result of these games. This will not only help us gain further insight into how these betting lines our formed, but potentially also allow us to give advice to our audience on which games to place bet on, and which lines are the most likely to hit. Furthermore, these datasets provide additional information that can also help us understand what factors may have contributed to a underdog/favorite winning, and a betting line hitting, and see if these external factors played a significant role in the result of the game. These certain factors may include final scores, basic offensive statistics, or even weather conditions all have the potential to provide insight into why certain events played out the way it did. Finally, these datasets are quite simple to work with, as both of the datasets can be easily merged into one, and the creating the correlations is not a hard task. However, while the data to work with may be simple, the result in the end will reveal vital information not only surrounding betting lines, but also provide information on the outcome of certain games and answer questions such as, why did the underdog win? And to answer these questions we can use the the external factors previously mentioned to analyze the end result of many NFL games. Overall, these datasets were selected due to their relative ease in terms of usage, and how the data has a strong correlation with the research question we are attempting to answer.
+
+### Where do the datasets come from?
+Our datasets both originate from a combination of Pro Football Reference, which is a sports reference site that contains NFL data, dating back to 1920 and several other prominent sports sites. Pro Football Reference provides a variety of NFL statistics surrounding players, franchises, and game data, and is a reliable source of data for anything surrounding the NFL.  For the betting lines on each game, the data was taken from Kaggle, which is a website that offers countless datasets surrounding a wide variety of topics in data science. For our specific dataset, the data was scraped through the use of a web scraper developed in R, and scraped NFL betting lines from http://www.repole.com/sun4cast/data.html for betting lines set for games before 2013, and sportsline.com and aussportsbetting.com for games up to present day, and then cross referenced with multiple sources, prominently Pro Football Reference, but also external sources such as ESPN and https://www.nflweather.com/ for weather data. Additionally, our second dataset was directly taken from the Pro Football Reference site, as they provide additional offensive information along with the scores of each NFL data. This data can be combined with the betting data to create a dataset that contains the betting data for NFL games, with each game’s corresponding offensive scores. \ \
+Pro-Football Reference: https://www.pro-football-reference.com/ \ \
+Kaggle Dataset: https://www.kaggle.com/datasets/tobycrabtree/nfl-scores-and-betting-data
+
+### Who collected the data?
+The data on Pro Football Reference is collected through many different sources and contributors who are heavily involved with the NFL as a whole. Names include Pete Palmer, Ken Pullis, and Gary Gillette, who are major contributors to Pro Football Reference data. Other figures involved with the data collection include Scott Kacsmar who provided game-winning and comeback statistics, Andrew McKillop for pre-season data, Warren Repole and Sports Odds History for various betting lines set by Vegas, and for historical NFL game data for games before 1960 are provided by T.J. Troup and Shane Holmes. For the dataset surrounding betting line information, the dataset was created by a user named spreadspoke, who scraped data from various sources as described above. This data was collected from various sources including, but not limited to ESPN, Pro Football Reference, NFLWeather.com, aussportingsbetting.com, sportsline.com, and various other sources.
+
+### Data Usage Permissions - Licenses or Restrictions on Data?
+For Pro-Football Reference, the data available of the website is made available to the general public for free usage, the only limitation is that they require users to credit the website. The data from Pro-Football Reference cannot also be used to make a public applications that use the data or train generative artificial intelligence models using the data provided without explicit permissions provided by Sports Reference. These general guidelines make using the data quite simple for the general public, unless they are trying to create their own application based on the data. The data is quite easy to use in order to answer a research question, which is why it is perfect for our case. On the other hand, the dataset retrieved from Kaggle has general Creative Commons license applied to the dataset. The license claims that the data can be shared, and adapted, meaning it can be freely changed to be used in the context of our project with no issues. However, this license also requires the users to attribute appropriate credit the to the author of the dataset, and the dataset cannot be used for commercial purposes. Additionally, if we use the dataset, to create another public project we must apply the project’s license to our own work, to protect the author’s work. This is the case for many of the sources in the projects, especially ESPN, who offers an API for their own data collected. Overall, the data we are using in this project is quite easily accessible to the general public, and there not many restrictions.
+
+### Dataset Specifics and Population/Sample Size
+The Kaggle dataset is about betting lines as previously mentioned but also includes many other relevant observations that we can use to create correlations in tandem with betting lines. These observations include, weather data, where the match was played(neutral site? home/away), and whether the game was played in an outdoor stadium rather than an indoor stadium. Additionally the dataset, that was scraped off of Pro Football Reference, includes data about the offensive performance about NFL games, such as yards gained by each team, and how many turnovers(fumbles/interceptions). This dataset also contains the winner of each game which is especially important for our analysis of the data. The population for these datasets is all NFL games, and we roughly have a sample size of around 3,500 NFL games, which have valid betting data and score lines. The sample size proves to be a large enough sample to conduct a thorough analysis on the data and generalize our findings to the population of the dataset. This will allow us to apply our findings to any NFL game, and find similar results.
+
+### Data Quality
+In terms of data quality issues, the primary issue we encountered was finding a suitable dataset surrounding the offensive statistics for every single NFL game ever played. This is simply a dataset that does not exist, and we do not have the resources nor the time to be able to scrape data for roughly 17,000 NFL games. In order to surpass this limitation, we simply took around 5,000 games easily accessible on Pro Football Reference, which severely lowered our data quality, as we had to reduce our sample size from the entire population size, to just 5,000 games. Additionally, we also had to filter out games that were too old for us to use, which only reduce the number of games to 3,5000. While, this was a decision that definitely hurts the accuracy of our results, the sample size is definitely large enough to produce reasonable results, that can be applied to any NFL game. Additionally, some columns in the betting dataset, were not the proper data type as certain betting stats were coded as characters
+
+### The Final Dataset
+Our final dataset contains both of the previously described dataset combined into one big dataset. In this merged dataset we have around 24 observations for around 3,500 different NFL games with valid betting lines. Each row in our dataset describes a distinct NFL game played ranging since 1979, as this was the year that every game started to have betting lines placed on them. Each row has the result of NFL games, and its corresponding betting lines, and other game data. As previously described, we have 24 observations, each of them corresponding each distinct NFL game played. They range from including the date of the NFL game, to the participating teams, to the final score and victor, the betting lines, and finally certain offensive statistics. The relevant variables include the betting line, the scores of the game, and offensive statistics, and all of these variables are coded as floating point variables/doubles, because these these statistics are all numbers and are coded as such. Finally, we do have some missing values in our dataset, which cover some of the most recent games played, and since these games have just been played, the dataset taken from Kaggle had not been updated since, and there are about 18 samples that we cannot use as such. Other than that, no other quality issues occur in the dataset surrounding the relevant variables. \
+An Example of the Final Dataset:
+```{r}
+head(game_bets)
+```
+
+## Data Processing/Other Methods
+
+### The Variables/Observations 
+For our datasets the cleaning and reshaping process was not too complicated as both data sets contained NFL games, and we simply had to match up each game with its betting lines and vice versa. Choosing which variables to select was quite straightforward and sensible because there are some variables that are needed for our main analysis, such as the date of the game played, what teams participated in the game, the betting lines for each game including the favorite to win, and finally the outcome of the game. Other external variables that were selected were chosen because of the potential of being able to create correlations between the outcomes of games was there. These factors include, where the game was played, did the home team win or lose, offensive statistics from each team, weather conditions potentially affecting the game as a whole, and finally how turnovers played a factor in the game. All of these factors were chosen to be included in our final dataset because they are all conditions that play a big part in the outcome of the game. These variables also can show why certain events went the way they did such as an underdog winning against a heavy favorite. Many people in the sporting world know how large a home field advantage can help a team winning a  game even if the odds are heavily stacked against them. Then we have weather conditions, which help us understand why a team may have lost, could have it been due to rainy weather or even snow, that may have caused an upset. 
+
+### The Data Processing Method
+In terms of processing our data, the process was not too difficult, as we simply had to download the datasets, and filter out columns that were not needed/columns that contained no data, and this was quite easy for both datasets because both datasets did not contain many columns that needed to be removed, as they both contained relevant information, that would provide to be quite useful in our analysis. Mainly, the main data processing that was involved was simply renaming the columns to be easier to use for visualization purposes, and as some of the columns had names with spaces or characters that were not easy to work with. Additionally, we also added 2 new columns in the dataset retrieved from Pro Football Reference, namely being “atHome”, and “TODiff”. The “atHome” column read from a column that we chose to drop, as the previous column, did not have a name, and contained the value “@” to signify whether the winning team played away or at home. We also added another column, “TODiff”, to signify the turnover differential in favor of the winning team. So if the winning team had less turnovers, the column would read a positive value, because the losing team committed more turnovers. This column would help us analyze whether winning teams won the turnover battle, and see if there is a strong correlation between winning a game and winning the subsequent turnover battle. Additionally we also converted the team names, from their long versions such as “Seattle Seahawks”, to a shorter id version, such as “SEA”. This was done from a csv file taken from the Kaggle dataset, which contained the long team names for every NFL team and its corresponding team id. For the Kaggle dataset, the only processing required was converting the betting line data to a numeric value to make it easier to work with, instead of it being a character value. Finally, to join the datasets, we needed to create a merge key value, because there was no common value between the datasets in any of the columns. The date of each game would not work because there are multiple games played on NFL Sundays, and the teams would not work either, because there are multiple divisional matchups per season, so we had to think of another idea. We came up with the idea to create a “game_id” column for each NFL game we had in our sample. This “game_id” column consisted of the data of an nfl game in the format of “yyyymmdd”, which was the date of the NFL game played. Then to make this id truly unique, we added on the id of the home team, which was retrieved from a separate dataset. This id was again taken from the csv file included in the Kaggle dataset. The final game_id, looks like “yyyymmdd0id”, where id was a 2-3 letter short form version of the home team. We added this column to both datasets, and then we merged the datasets using this column as a merge key.
+
+### Selecting the Sample/Other Technical Decisions
+Selecting our sample was quite simple as we selected, some of the most common games from Pro Football Reference, which resulted in around 2000 games of data in our second dataset to use. Then we filtered our first dataset, consisting of all the betting lines to match all the games to the games we found in our second dataset. We then finally filtered out all the games with actual betting lines that could be used, to result in our final dataset and sample. For missing values or NA values, we made the decision to only exclude the data if there was a missing value in a major observation, such as final score data, or betting lines, as other data points wouldn’t impact our main analysis, however we need the betting lines and final scores to make our main analysis, so we only removed data points if there was no corresponding betting data or the data was not present for the scores.
+
+### Statistical Methods
+For our analysis, and graph making we did not particularly utilize any complex statistical method such as regression, but only used common methods such as correlations and correlating data. For some other methods, we also used comparisons between 2 visualizations to infer some data, and come to a conclusion. In the making of our graphs, we also used the averages of datapoints, to reflect a certain time period, so our data was compact and easy to display. Otherwise, no other complex methods were in play.
+
+## The Results - Visualizations
+### 1. How often to favorites win based on the spread?
+```{r}
+game_bets %>% 
+  filter(!is.na(spread_favorite)) %>%
+  mutate(fav_win = (winner == team_favorite_id)) %>% 
+  group_by(spread_favorite) %>%
+  ggplot(aes(spread_favorite, fill=factor(fav_win))) +
+  geom_histogram(position = "Dodge",
+                 col = "black",
+                 linewidth = 0.5,
+                 bins=20) +
+  labs(x = "Point Spread", y = "# of Games", fill = "Did the Favorite Win?", title = "Figure 1: How Often Do Favorites Win Based on the Spread?")
+```
+
+#### Figure 1 Description
+This graph is a histogram that covers how much more likely a team is to win a game depending on how much they are favored in the points spread before the game.  To make this plot, we first mutated a column called fav_win, which gave us a TRUE-FALSE output as to if the favorite won the game or not.  Then, we made a histogram that added up the total number of wins for both TRUE and FALSE at each point spread.  In order to make the data more easy to read and understand, we used position = "Dodge" as well as borders for the columns in order to help make each data bar appear more separated.  Finally, we labeled the titles, axis, and key to help make the data appear more simple to understand.
+
+### 2. How accurate are the over/under totals compared with the total score of the game?
+```{r}
+game_bets %>% 
+  filter(!is.na(over_under_line)) %>%
+  mutate(total_points = PtsW + PtsL) %>% 
+  mutate(over_under = (as.numeric(over_under_line) %/% 1)* 1) %>% 
+  mutate(accuracy = over_under - total_points) %>% 
+  ggplot(aes(accuracy)) +
+  geom_histogram(fill = "green4",
+                 col = "brown",
+                 linewidth=1,
+                 bins = 25) +
+  labs(x = "Accuracy", y = "# of Games", title = "Figure 2: How Accurate are Oddsmakers Predicting Point Totals?")
+
+```
+
+#### Figure 2 Description
+The goal of this histogram was to get a better understanding of just how accurate the odds makers are at correctly predicting the over-under totals.  The first thing that we did was mutate the over underline column to a new column, but now grouping the spreads in groups of one.  Although NFL betting totals can have half points on them, an actual game itself can't finish with a half point.  Because of this, we thought it was better to just go by a full point for every spot on the histogram, which also makes the data much easier to read.  After that, we mutated a new column that showcased the total points in a game, and then made one more column that subtracted the total points from the over under, giving us the amount of points that the oddsmakers missed the result by.  After that, it was just labeling and coloring to make sure it looked good. 
+
+### 3. Effect of indoor/outdoor stadiums on over/under totals?
+```{r}
+game_bets %>% 
+  filter(weather_detail == "indoor" | is.na(weather_detail)) %>%
+  mutate(indoor_std = ifelse(is.na(weather_detail), FALSE, TRUE)) %>% 
+  group_by(indoor_std) %>% 
+  summarize(avg_OU = mean(over_under_line, na.rm=TRUE)) %>%
+  ggplot(aes(indoor_std, avg_OU, fill=indoor_std)) +
+  geom_col() + 
+  scale_fill_manual(values = c("TRUE" = "darkgoldenrod2", "FALSE" = "aquamarine")) +
+  geom_text(aes(label = avg_OU), vjust = 2, color = "grey2", size = 6) +
+  labs(x = "Average Over/Under Total", y = "Indoor Stadium", fill = "Indoor Stadium", title = "Figure 3: Is the Over/Under Higher or Lower in an Indoor Stadium?")
+```
+
+#### Figure 3 Description
+The purpose of this bar graph is to see if the over-under totals are different in games depending on if the stadium is an indoor venue or not.  In order to craft this graph, we first removed any games that were recorded with inclement weather, since we purely wanted to focus on the difference between indoors and traditional outdoors.  From there, we mutated a new column that addressed if the stadium was indeed indoors, stating either true or false.  After that, we made sure to color each column differently in order to distinguish it from previous plots we may have already made.  Finally, we added all of our labels to the column, even putting the total number on the bar graph itself so it looks more aesthetically pleasing.
+
+### 4. Over/under lines through the decades. Have odds makers matched evolving offenses?
+```{r}
+game_bets %>% 
+  mutate(year = as.numeric(substr(date, 1, 4))) %>%
+  mutate(decade = year - year %% 10, na.rm = TRUE) %>%
+  group_by(decade) %>% 
+  summarise(Decade_over_under  = mean(over_under_line, na.rm=TRUE)) %>% 
+  ggplot(aes(decade, Decade_over_under))+
+  geom_col()+
+  geom_text(aes(label = Decade_over_under), vjust = -0.5, color = "red") +
+  labs(x="Decade",
+       y="Over/Under Average",
+       title="Figure 4.1: How have Over/Under lines evolved through the decades?")
+
+game_bets %>% 
+  mutate(year = as.numeric(substr(date, 1, 4))) %>%
+  mutate(decade = year - year %% 10, na.rm = TRUE) %>%
+  mutate(tyds = YdsW + YdsL) %>%
+  group_by(decade) %>% 
+  summarise(ydsPerGame = mean(tyds)) %>% 
+  ggplot(aes(decade, ydsPerGame))+
+  geom_col()+
+  geom_text(aes(label = ydsPerGame), vjust = -0.5, color = "red") +
+  labs(x = "Decade",
+       y = "Yards per Game",
+       title = "Figure 4.2: How have offenses evolved through the decades?")
+
+```
+
+#### Figure 4 Description
+The purpose of this graph is to compare total yards and the over unders to see if there is any correlation between the two. To create the graph we first had to get the year which we did by taking the first 4 characters of the date and then converted them from characters to doubles. We than got the decade by getting the remainder of year divided by 10 and than subtracting year from the remainder and mutated the year and decade in. We than we got the average over and under line for every decade and printed it with the graph. For the one for total yards we got the total yards by adding the yards of the winning team and losing team and mutated it in to our data set. We than found the average amount of total yards for every decade and graphed it on the screen. When comparing the 2 graphs side by side we can see that there is a correlation between total yards and over under lines.
+
+### 5. Spreads favoring home team or away team?
+```{r}
+game_bets %>% 
+  filter(!is.na(spread_favorite)) %>%
+  group_by(atHome) %>% 
+  ggplot(aes(atHome, spread_favorite))+
+  geom_col()+
+  labs(x = "At Home", y = "Average Spread", title = "Figure 5.1: How much larger is the combined spread for home teams?") 
+
+game_bets %>% 
+  group_by(atHome) %>% 
+  summarise(AvgAtHome = mean(spread_favorite, na.rm=TRUE)) %>% 
+  ggplot(aes(atHome, AvgAtHome))+
+  geom_col()+
+  geom_text(aes(label = AvgAtHome), vjust = -0.5, color = "red")+
+  labs(x = "At Home", y = "Average Spread", title = "Figure 5.2: What is the average spread for teams favored away and at home?") 
+```
+
+#### Figure 5 Description
+These graphs were done to see the difference between being favored at home and being favored away. I graphed the first graph by grouping by being at home and found the average spread for a team that was at home vs one that was away. When grpahed we could see the difference was less than one pointing out that teams at home are favored to win on average by more than a team favored to win at away. For the second one I did the same thing except I didn’t get the average so I could get the total combined spread at home vs away. This showed us that when you combine them the home total is way greater than the away total so this shows us teams are more likely to be favored if they are at home since the difference between home and away wasn’t as drastic on average vs when combined.
+
+### 6. Underdogs win more at home/away?
+```{r}
+game_bets %>%
+  filter(team_favorite_id != "PICK") %>%
+  mutate(underdog_win_home = winner != team_favorite_id & atHome) %>%
+  mutate(underdog_win_away = winner != team_favorite_id & !atHome) %>%
+  summarise(underdog_wins_home = length(which(underdog_win_home==TRUE)), underdog_wins_away = length(which(underdog_win_away==TRUE))) %>%
+  set_names("Home", "Away") %>%
+  pivot_longer(cols = c('Home', 'Away'), names_to = "wonat", values_to = "count") %>%
+  ggplot(aes(wonat, count, fill = wonat)) +
+  geom_col() +
+  labs(x = "Won At?",
+       y = "Total Games Won",
+       fill = "Won At?",
+       title = "Figure 6: How many games did the Underdog win factoring in home field advantage?")
+```
+
+#### Figure 6 Description
+The bar graph above displays how many games an underdog won at home in comparison to the win count for underdogs away from home. The goal of this graph is to show how home field factors into the decision book makers, and show how book makers seem to factor in home field advantage. We define an underdog to be a team that was not favored to win, and we separate this into 2 different variables depending on whether the team was at home. Then simply count how many upsets happened away and at home, and plot the data.
+
+### 7. How often do the lines set by bookmakers hit? How have they changed over time, with the advent of technology?
+```{r}
+game_bets %>%
+  mutate(season = as.numeric(format(as.Date(date, format="%Y-%m-%d"),"%Y"))) %>%
+  mutate(spread_hit = ifelse(winner == team_favorite_id, PtsL - PtsW <= spread_favorite, FALSE)) %>%
+  mutate(overunder_hit = PtsW + PtsL >= over_under_line) %>%
+  mutate(decade = season - season %% 10) %>%
+  group_by(decade) %>%
+  mutate(games_decade = table(decade)) %>%
+  mutate(spread_hit_pct = length(which(spread_hit == TRUE)) / games_decade) %>%
+  mutate(overunder_hit_pct = length(which(overunder_hit == TRUE)) / games_decade) %>%
+  select(decade, spread_hit_pct, overunder_hit_pct) %>%
+  distinct() %>%
+  set_names("decade", "Spread", "Over/Under") %>%
+  pivot_longer(cols=c('Spread', 'Over/Under'), names_to = "bet", values_to = "pct") %>%
+  ggplot(aes(decade, pct, color = bet)) +
+  geom_smooth() +
+  labs(x = "Decade",
+       y = "Chance of the Bet Hitting",
+       color = "Type of Bet",
+       title = "Figure 7: Accuracy of Betting Lines")
+```
+
+#### Figure 7 Description
+The figure shows the accuracy of betting lines, both the spread and over/under(specifically the under), the percentage of which bets hit. We find these accuracies for each decade by finding the number of times the bet hit over a decade, and how many games were in the decade, and simply dividing the values yielded in a percentage which used to plot accuracy percentages through the decades.
+
+## Analysis/Findings
+
+### Figure 1 Findings
+By analyzing this chart, we can see that there is a correlation between how many points a team is favored by, and how often they win a game outright.  While these lines are set to predict how many points a certain team will win by, we wanted to see if a team being favored to win by more actually increases their chances to just win the game itself.  The ratio of length between the TRUE and FALSE columns is much greater as the graph goes further to the left (bigger point spread).  However, as the spread becomes 3, 2, or 1, the bars are much closer, with the underdog occasionally winning more often.  This can especially be seen when there is a point spread of 2.
+
+### Figure 2 Findings
+When analyzing the histogram, we can tell that there is some accuracy for the oddsmakers when it comes to trying to predict these betting lines. You can see that it is very rare for them to miss by more than about 15 points in either direction, and the traditional bell curve shape shows that they are not usually too keen on being too far higher or lower with a prediction.  However, the overall shape of the histogram along with the tallest column suggests that the oddsmakers can tend to be two points lower than what the actual result is.  This is very useful to people who would bet on sports, as they know that betting slightly over on games is likely more profitable than selecting the under’s. 
+
+### Figure 3 Findings
+By looking at this comparison in the bar chart, we can see that there is actually a difference in how oddsmakers determine their over-under total for a game, depending on if the stadium is being played indoors or outdoors.  The reasoning that we could come up with is that playing indoors means that there are not many outside conditions that could affect the playing of the game, which allows offenses to perform better and score more points.  However, seeing this difference visually in the chart helps spotters wagerers better recognize that they need to prepare for higher lines if the game is being played inside, as opposed to an outdoors matchup.  While 2 points may not seem like much, the accuracy of oddsmakers in figure 2 suggests that it could be the difference between winning and losing.
+
+### Figure 4 Findings
+For the over under for the decades we can see that it moves along at a similar rate to total yards. This shows us that with more yards a team has in total the more points they are likely to put up and a betting book is most likely to follow along with that. 
+
+### Figure 5 Findings
+Teams favored to win at home have a spread that expects them to win by more compared to a team that is favored to win away. If we take the total amount of spread for teams expected to win at home vs away we can see the home one is significantly larger showing us that teams are more often favored to win if they are at home.   
+
+### Figure 6 Findings
+The bar graph shown above, goes against the belief that home field is a factor when upsets occur. Usually the primary belief is that upsets occur more often at home; the home team provides energy to the team and also plays a part in disrupting the opponent's offense. However, the data tha we have proves the contrary. Most upsets in fact happen away from home, which may make sense. Book makers usually factor in home field advantage into their spreads, and shift the spread over by 2-3 points as opposed to spread created on a neutral field. However, if you are betting on a home team to upset a much stronger away team, and they already not favored, it is not a good idea to take the home team to upset the away team, because the home field advantage is already factored into the spread as seen in our Figure 5 findings.
+
+### Figure 7 Findings
+The line graph above shows the accuracy of betting lines hitting spanning from the 1970s to the 2020s. We see that in our graph, the percentages of bets that actually match the spread is quite low and remains around 30%, and the same is for the under of the Over/Under line. This makes more sense because for a spread to hit, the team has to win by that many points or more, and in a professional league it is not common for teams to win by a large margin often, unless they are the best of the best and are facing the bottom of the league. However, it is always a good idea to take the underdog, to cover the spread, because the chances for the favorite to cover the spread is quite low. The same is for the under, as most of the time, the over on the over/under is easily covered. In a league where offenses are constantly evolving, the betters have to match the over/under totals, but the chances to hit the under, is always quite low, averaging a 30% of hitting this mark. Overall, it is a good idea to take the under on the over/under and take the side of the underdog to cover the spread, as the chances of the the favorite covering the spread, is not high.
+
+### Overall Findings
+To summarize, we find the betting lines set are most definitely impact by external factors such as home field advantage and weather conditions, and bets makers definitely take this factors in mind when coming up with their lines. Addiitonally, the spread and over/under lines usually hover around being accurate, but are not that accurate. For the best chances of your bets hitting, it is a good idea to take the over on the over/under, as Figure 2, and 7 suggest that the accuracy on the over/under is usually favorite towards the over. Additionally, while choosing the spread, it is also a good idea for you to never pick the favorite to cover the spread, as the chances of them doing so is quite low, unless the spread is a lower value(below 4).
+
+## Final Summary/Takeaway
+We wrote this project in hope of learning of how betting lines are created and what factors come into consideration when making these lines. The target audience for our project are nfl enthusiests, sports bettors, and sports analytics enthusiast. They can learn what factors come into having sports bets created and what to look for while placing bets. The dataset includes many factors such as weather, over/under lines, indoor/outdoor stadium, total yards, points actually scored, projected winner, home away or neutral game, and other factors that may sway how a sportsbook would create a betting line. The project focuses on the analysis of NFL games, incorporating data on betting lines, offensive statistics from those games, and outcomes from the game. Our primary datasets were from Kaggle and Pro Football Reference as they were free to use and held extensive data from different time periods of football so we can examine how betting lines have changed over time. The aim is to explore correlations between betting lines and what can affect the outcome of a betting line using various game factors, such as weather conditions, turnovers, and home field advantage. The study also investigates how betting lines impact game results and explores the accuracy of these lines. The final dataset consists of around 3,500 NFL games with valid betting lines, covering the period from 1979 to the present. The analysis suggests a correlation between betting lines and total yards showing that higher total yards are associated with higher point expectations causing the lines to be higher. This implies that sportsbooks may use how many yards they think a team will get when they make an over-under line. Teams favored to win at home tend to have larger spreads compared to teams favored to win away. This shows us the significance of home field advantage in sports betting, as teams playing on their home field are more likely to be favored with larger point differentials. This is also seen as the total spread of teams expected to win at home is a greater amount than the total spread of teams expected to win away. The analysis reveals interesting correlations between betting lines and game factors, emphasizing the importance of weather conditions, total yards, turnovers, and home field advantage in sports betting. Understanding these correlations can provide valuable information for both bettors and sportsbooks, contributing to more informed decision-making in the world of sports betting and we can also see how sportsbooks come up with how they make their betting lines. Something that we takeaway from our project was that it is safer to bet over on the over/unders as well as betting an underdog to cover the spread as that is the most common result.
